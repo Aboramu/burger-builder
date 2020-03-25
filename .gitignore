@@ -4,13 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
-/config/jest
-/config/env.js
-/config/getHttpsConfig.js
-/config/modules.js
-/config/paths.js
-/config/pnpTs.js
-/config/webpackDevServer.config.js
+/config
+/scripts
+
 
 # testing
 /coverage

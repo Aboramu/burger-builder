@@ -4,7 +4,6 @@ import Aux from '../../hoc';
 import classes from './layout.css';
 
 const Layout = (props) => {
-  console.log(classes.Content);
   return(
     <Aux>
       <div>
