@@ -4,6 +4,7 @@ import classes from './burger.css';
 import BurgerIngridient from './burger-ingridient';
 
 const Burger = (props) => {
+
   let transformedIngredients = Object.keys(props.ingredients)
     .map(igKey => {
       return [...Array(props.ingredients[igKey])].map((_, i) => {
@@ -17,6 +18,8 @@ const Burger = (props) => {
   if(transformedIngredients.length === 0) {
     transformedIngredients = <div>Please start adding ingridients!</div>
   }
+
+
   return (
     <div className={classes.Burger}> 
       <BurgerIngridient type="bread-top" />
