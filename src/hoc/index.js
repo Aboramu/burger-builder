@@ -1,3 +1,4 @@
-import Aux from './aux';
+import Aux from './Aux';
+import Layout from './Layout';
 
-export default Aux;
+export { Aux, Layout };

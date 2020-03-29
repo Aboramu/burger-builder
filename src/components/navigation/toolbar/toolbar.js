@@ -1,7 +1,7 @@
 import React from 'react';
 
-import classes from './toolbar.css';
-import Logo from '../../logo';
+import classes from './Toolbar.css';
+import Logo from '../../Logo';
 import NavigationItems from '../NavigationItems';
 import DrawerToggle from '../SideDrawer/DrawerToggle';
 
