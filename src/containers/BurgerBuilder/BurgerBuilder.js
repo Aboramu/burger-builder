@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {Aux} from '../../hoc';
+import { Aux, withErrorHandler } from '../../hoc';
 import Burger from '../../components/Burger';
 import BuildControls from '../../components/Burger/BuildControls';
 import Modal from '../../components/UI/Modal';
@@ -158,4 +158,4 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
