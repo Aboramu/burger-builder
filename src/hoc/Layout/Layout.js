@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { Aux } from '../';
-import classes from './Layout.css';
-import Toolbar from '../../components/Navigation/Toolbar';
+import { Aux } from '../'; // компонент обертка
+import classes from './Layout.css'; // импортируем классы css
+import Toolbar from '../../components/Navigation/Toolbar'; 
 import SideDrawer from '../../components/Navigation/SideDrawer';
 
 class Layout extends Component {
@@ -15,6 +15,7 @@ class Layout extends Component {
   }
 
   sideDraweToggleHandler = () => {
+    // для работы с актуальным state в setState вызываем функцию, которая принимает текущ state и возвращает новый
     this.setState((prevState) => {
       return {showSideDrawer: !prevState.showSideDrawer};
     });

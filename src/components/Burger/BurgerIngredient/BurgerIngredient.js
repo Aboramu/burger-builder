@@ -7,6 +7,7 @@ class BurgerIngredient extends Component {
   render() {
     let ingridient = null;  
 
+    // в зависимости от получаемого типо отрисовываем соответствующий ингридиент
     switch (this.props.type) {
       case ('bread-bottom'):
         ingridient = <div className={classes.BreadBottom}></div>;
@@ -45,6 +46,7 @@ class BurgerIngredient extends Component {
   }
 }
 
+// делаем проверку на тип получаемого значения с помощью prop-types
 BurgerIngredient.propTypes = {
   type: PropTypes.string.isRequired
 };

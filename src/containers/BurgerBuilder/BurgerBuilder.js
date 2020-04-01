@@ -14,7 +14,6 @@ const INGREDIENT_PRICES = {
   meat: 1.3,
   bacon: 0.7
 };
-
 class BurgerBuilder extends Component {
   state = {
     ingredients: null,
@@ -26,6 +25,7 @@ class BurgerBuilder extends Component {
   }
 
   componentDidMount() {
+    // получаем список ингридиентов и добавляем в state
     axios.get('/ingredients.json')
       .then(res => {
         this.setState({
@@ -38,8 +38,8 @@ class BurgerBuilder extends Component {
   }
 
   updatePurchaseState = (ingredients) => {
-      // создаем массив с ключами объекта, заменям ключи в массиве
-      // на значения из объекта и суммируем
+      // создаем массив с ключами объекта (keys), заменяем ключи в массиве
+      // на значения из объекта (map) и возвращаем сумму этих значений (reduce)
     const sum = Object.keys(ingredients)
       .map(igKey => {
         return ingredients[igKey]
@@ -47,16 +47,22 @@ class BurgerBuilder extends Component {
       .reduce((sum, el) => {
         return sum + el;
       }, 0);
+      // если значение больше нуля, то устанавливаем purchaseable в true. 
+      // влияет на доступность заказа в BuildControls
       this.setState({purchaseable: sum > 0})
   }
 
   addIngredientHandler = (type) => {
+    // добавляет ингридиент, функция принимает на вход название ингридиента
     const oldCount = this.state.ingredients[type];
     const updatedCount = oldCount + 1;
+    // компируем массив ингридиентов из стейта
     const updatedIngredients = {
       ...this.state.ingredients
     };
+    // в полученном массиве изменяем значение количества ингридента на обновленное
     updatedIngredients[type] = updatedCount;
+    // добавляем цену ингридиента к общей цене
     const priceAddition = INGREDIENT_PRICES[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
@@ -68,6 +74,7 @@ class BurgerBuilder extends Component {
   }
 
   removeIngredientHandler = (type) => {
+    // убирает ингридиент
     const oldCount = this.state.ingredients[type];
     if(oldCount <= 0) {
       return;
@@ -84,10 +91,12 @@ class BurgerBuilder extends Component {
       totalPrice: newPrice,
       ingredients: updatedIngredients
     });
+    // устанавливаем доступность заказа
     this.updatePurchaseState(updatedIngredients);
   }
 
   purchaseHandler = () => {
+    // если  true то рендерим Modal
     this.setState({purchasing: true});
   }
 
@@ -96,8 +105,9 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    //alert('You continue!');
-    this.setState({loading: true})
+    // при клике continue в Modal показываем спинер
+    this.setState({loading: true});
+    // dummy order
     const order = {
       igredients: this.state.ingredients,
       price: this.state.totalPrice,
@@ -111,9 +121,11 @@ class BurgerBuilder extends Component {
         email: 'test@test.com'      
       },
       deliveryMethod: 'fastest'
-    }
+    };
+    // отправляем запрос на сервер
     axios.post('/orders.json', order)
       .then(res => {
+        // убирам Spinner и закрываем Modal
         this.setState({ 
           loading: false,
           purchasing: false
@@ -132,12 +144,14 @@ class BurgerBuilder extends Component {
       ...this.state.ingredients
     }
 
+    // для каждого ингридиента устанавливаем true или false для кнопки less
+    // если количество 0 или меньше, то кнопка недоступна
     for(let key in deisabledInfo) {
       deisabledInfo[key] = deisabledInfo[key] <= 0
     }
 
     let orderSummary = null;
-    let burger = !this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
+    let burger = !this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />; 
 
     if(this.state.ingredients) {
       burger = (

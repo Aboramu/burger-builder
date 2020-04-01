@@ -4,16 +4,23 @@ import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient';
 
 const Burger = (props) => {
-
-  let transformedIngredients = Object.keys(props.ingredients)
+  // из ключей объекта props.ingredients создаем массив, вызываем map,
+  // для каждого ингридиента возвращаем разряженный массив длинной props.ingredients[igKey],
+  // с помощью spread оператора распределяем этот массив в новый, с неопределенными значениями
+  // и вызываем map, который возвращает новый массив содержащий компоненты BurgerIngredient (map)
+  // вызываем reduce со стартовым значеним [] и для каждого подмасива в transformedIngredients, вызываем
+  // slice с [], в результате получаем одноуровневый массив содержащий компоненты BurgerIngredient 
+  
+  let transformedIngredients = Object.keys(props.ingredients) 
     .map(igKey => {
-      return [...Array(props.ingredients[igKey])].map((_, i) => {
+      return [...Array(props.ingredients[igKey])].map((_, i) => { 
         return <BurgerIngredient key={igKey + i} type={igKey} />
       });
-    })
+    }) 
     .reduce((arr, el) => {
       return arr.concat(el)
-    }, []);
+    }, []);   
+    // console.log(transformedIngredients);
 
   if(transformedIngredients.length === 0) {
     transformedIngredients = <div>Please start adding ingridients!</div>
