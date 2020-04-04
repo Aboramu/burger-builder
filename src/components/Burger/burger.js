@@ -1,9 +1,12 @@
 import React from 'react';
+// для того что бы получить доступ к Router props)match, history) в любом компоненте
+// import { withRouter } from 'react-router-dom'; // это hoc просто оборачиваем в него нужный компонент
 
 import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient';
 
-const Burger = (props) => {
+const burger = (props) => {
+  //console.log(props);
   // из ключей объекта props.ingredients создаем массив, вызываем map,
   // для каждого ингридиента возвращаем разряженный массив длинной props.ingredients[igKey],
   // с помощью spread оператора распределяем этот массив в новый, с неопределенными значениями
@@ -36,4 +39,4 @@ const Burger = (props) => {
   );
 };
 
-export default Burger;
+export default burger;
