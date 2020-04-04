@@ -105,46 +105,13 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    // при клике continue в Modal показываем спинер
-    // this.setState({loading: true});
-    // dummy order
-    // const order = {
-    //   igredients: this.state.ingredients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: 'Artem Tarasov',
-    //     addres: {
-    //       street: 'TestStreet 1',
-    //       zipCode: '352352',
-    //       country: 'Russia'
-    //     },
-    //     email: 'test@test.com'      
-    //   },
-    //   deliveryMethod: 'fastest'
-    // };
-    // // отправляем запрос на сервер
-    // axios.post('/orders.json', order)
-    //   .then(res => {
-    //     // убирам Spinner и закрываем Modal
-    //     this.setState({ 
-    //       loading: false,
-    //       purchasing: false
-    //     });
-    //   })
-    //   .catch(err => {
-    //     this.setState({ 
-    //       loading: false,
-    //       purchasing: false
-    //     });
-    //   }) ;
     const queryParams = [];
-
     // для каждого i в state.ingredients создаем элемент вида bacon=1 в массиве queryParams ()
     // т.е заменяем имя ключа и его значение символами из utf-8
     for (let i in this.state.ingredients) {
       queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
     };
-    
+    queryParams.push(`price=${this.state.totalPrice}`)
     const queryString = queryParams.join('&'); // создаем строку запроса
 
     this.props.history.push({
@@ -157,7 +124,6 @@ class BurgerBuilder extends Component {
     const deisabledInfo = {
       ...this.state.ingredients
     }
-
     // для каждого ингридиента устанавливаем true или false для кнопки less
     // если количество 0 или меньше, то кнопка недоступна
     for(let key in deisabledInfo) {
