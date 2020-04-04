@@ -22,7 +22,7 @@ class ContactData extends Component {
     this.setState({loading: true});
     // dummy order
     const order = {
-      igredients: this.props.ingredients,
+      ingredients: this.props.ingredients,
       price: this.props.price,
       customer: {
         name: 'Artem Tarasov',
