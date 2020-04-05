@@ -4,18 +4,24 @@ import classes from './Input.css';
 
 const input = (props) => {
   let inputElement = null;
+  // добавляем динамический класс для feedback validation
+  const inputClasses = [classes.InputElement];
+
+  if(props.invalid && props.shouldValidate && props.touched) {
+    inputClasses.push(classes.Invalid);
+  } 
 
   switch( props.elementType ) {
     case ('input'):
       inputElement = <input 
-        className={classes.InputElement} 
+        className={inputClasses.join(' ')} 
         {...props.elementConfig} 
         value={props.value} 
         onChange={props.changed}/>;
       break;
     case ('textarea' ):
       inputElement = <textarea 
-        className={classes.InputElement} 
+        className={inputClasses.join(' ')} 
         {...props.elementConfig} 
         value={props.value} 
         onChange={props.changed}/>
@@ -23,7 +29,7 @@ const input = (props) => {
     case ('select'):
       inputElement = (
         <select
-        className={classes.InputElement} 
+        className={inputClasses.join(' ')} 
         value={props.value}
         onChange={props.changed}>
           {props.elementConfig.options.map(option => (
@@ -36,16 +42,24 @@ const input = (props) => {
       break;
     default:
       inputElement = <input 
-        className={classes.InputElement} 
+        className={inputClasses.join(' ')} 
         {...props.elementConfig} 
         value={props.value} 
         onChange={props.changed}/>
   }
+
+  let validationError = null;
+  if(props.invalid && props.touched) {
+    validationError = <p className={classes.ValidationError}>Please enter a valid {props.valuetype}!</p>;
+  }
+
+  console.log(props)
   
   return (
-    <div className={classes.Input}>
+    <div className={inputClasses.join(' ')}>
       <label className={classes.Label}>{props.labes}</label>
       {inputElement}
+      {validationError}
     </div>
   );
   
