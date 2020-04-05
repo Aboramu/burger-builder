@@ -52,8 +52,6 @@ const input = (props) => {
   if(props.invalid && props.touched) {
     validationError = <p className={classes.ValidationError}>Please enter a valid {props.valuetype}!</p>;
   }
-
-  console.log(props)
   
   return (
     <div className={inputClasses.join(' ')}>
