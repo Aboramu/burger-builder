@@ -67,11 +67,15 @@ class ContactData extends Component {
     event.preventDefault();  // отменяем rerender
     // при клике continue в Modal показываем спинер
     this.setState({loading: true});
+    const formData = {};
+    for (let formElementId in this.state.orderForm) {
+      formData[formElementId] = this.state.orderForm[formElementId].value;
+    }
     // dummy order
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      
+      orderData: formData
     };
     // отправляем запрос на сервер
     axios.post('/orders.json', order)
@@ -113,17 +117,19 @@ class ContactData extends Component {
       })
     }
 
-    let form = (<form>
-      {formElementArray.map(formElement => (
-        <Input 
-          key={formElement.id}
-          elementType={formElement.config.elementType}
-          elementConfig={formElement.config.elementConfig}
-          value={formElement.config.value} 
-          changed={(event) => this.inputChangedHandler(event, formElement.id)} />
-      ))}
-      <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
-    </form>);
+    let form = (
+      <form onSubmit={this.orderHandler}>
+        {formElementArray.map(formElement => (
+          <Input 
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value} 
+            changed={(event) => this.inputChangedHandler(event, formElement.id)} />
+        ))}
+        <Button btnType="Success">ORDER</Button>
+      </form>
+    );
 
     if (this.state.loading) {
       form = <Spinner />;
