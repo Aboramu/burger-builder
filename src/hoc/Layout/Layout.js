@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
-import { Aux } from '../'; // компонент обертка
 import classes from './Layout.css'; // импортируем классы css
 import Toolbar from '../../components/Navigation/Toolbar'; 
 import SideDrawer from '../../components/Navigation/SideDrawer';
@@ -23,7 +22,7 @@ class Layout extends Component {
 
   render() {
     return(
-      <Aux>
+      <Fragment>
         <Toolbar 
           opened={this.sideDraweToggleHandler}/>
         <SideDrawer
@@ -32,7 +31,7 @@ class Layout extends Component {
         <main className={classes.Content}>
           {this.props.children}
         </main>
-      </Aux> 
+      </Fragment> 
     );
   }
 }

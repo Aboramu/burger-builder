@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'; 
 
-import { Aux, withErrorHandler } from '../../hoc';
+import { withErrorHandler } from '../../hoc';
 import Burger from '../../components/Burger';
 import BuildControls from '../../components/Burger/BuildControls';
 import Modal from '../../components/UI/Modal';
@@ -74,7 +74,7 @@ class BurgerBuilder extends Component {
 
     if(this.props.ings) {
       burger = (
-        <Aux>
+        <Fragment>
           <Burger ingredients={this.props.ings} />
           <BuildControls
             ingredientAdded={this.props.onIngredientAdded}
@@ -83,7 +83,7 @@ class BurgerBuilder extends Component {
             price={this.props.price}
             purchaseable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler} />
-        </Aux>
+        </Fragment>
       );
       orderSummary = 
         <OrderSummary 
@@ -98,14 +98,14 @@ class BurgerBuilder extends Component {
     }
 
     return (
-      <Aux>
+      <Fragment>
         <Modal 
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}  >
             {orderSummary}
         </Modal>
         {burger}
-      </Aux>
+      </Fragment>
     );
   }
 }
