@@ -108,7 +108,7 @@ class Auth extends Component {
     ));
     return (
       <div className={classes.Auth}>
-        <form onSubmit={this.props.submitHandler}>
+        <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="Success">SUBMIT</Button>
         </form>
