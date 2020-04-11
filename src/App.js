@@ -5,7 +5,8 @@ import { Route } from 'react-router-dom';
 import { Layout } from './hoc';
 import BurgerBuilder from './containers/BurgerBuilder';
 import Checkout from './containers/Checkout';
-import Orders from './containers/Orders'
+import Orders from './containers/Orders';
+import Auth from './containers/Auth';
 class App extends Component {
   render() {
     return (
@@ -15,6 +16,7 @@ class App extends Component {
             <Route path='/' exact component={BurgerBuilder} />
             <Route path='/checkout' component={Checkout} />
             <Route path='/orders' component={Orders} />
+            <Route path='/auth' component={Auth} />
           </Layout>
         </BrowserRouter>
       </div>
