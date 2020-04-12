@@ -54,7 +54,7 @@ export const purchaseBurger = (orderData, token) => {
   return dispatch => {
     dispatch(purchaseBurgerStart());
     // отправляем запрос на сервер
-    axios.post(`/orders.json&auth=${token}`, orderData)
+    axios.post(`/orders.json?auth=${token}`, orderData)
       .then(res => {
         console.log(res.data);
         dispatch(purchaseBurgerSuccess(res.data.name, orderData));
@@ -65,12 +65,13 @@ export const purchaseBurger = (orderData, token) => {
   };
 };
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
   return dispatch => {
     dispatch(fetchOrdersStart());
     // получаем из firebase все записи и преобразует обект, 
     // в массив объектов 
-    axios.get(`/orders.json?auth=${token}`)
+    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+    axios.get(`/orders.json${queryParams}`)
     .then(res => {
       const fetchedOrders = [];
       for (let key in res.data) {
