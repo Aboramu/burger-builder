@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import classes from './Layout.css'; // импортируем классы css
 import Toolbar from '../../components/Navigation/Toolbar'; 
@@ -24,8 +25,10 @@ class Layout extends Component {
     return(
       <Fragment>
         <Toolbar 
+          isAuth={this.props.isAuth}
           opened={this.sideDraweToggleHandler}/>
         <SideDrawer
+          isAuth={this.props.isAuth}
           closed={this.sideDraweClosedHandler} 
           open={this.state.showSideDrawer} />
         <main className={classes.Content}>
@@ -36,4 +39,10 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+  return {
+    isAuth: state.auth.token !== null
+  };
+};
+
+export default connect(mapStateToProps)(Layout);

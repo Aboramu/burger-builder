@@ -22,6 +22,22 @@ export const authFail = (err) => {
   };
 };
 
+export const logout = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  };
+};
+
+// при получении улюча запускаем таймер, по истечении которого
+// logout
+export const checkAuthTimeout = (expirationTime) => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
+  };
+};
+
 export const auth = (email, pass, isSignup) => {
   return dispatch => {
     dispatch(authStart());
@@ -36,12 +52,11 @@ export const auth = (email, pass, isSignup) => {
     
     axios.post(url, authData)
       .then(res => {
-        console.log(res);
         dispatch(authSuccess(res.data.idToken, res.data.localId));
+        dispatch(checkAuthTimeout(res.data.expiresIn));
       })
       .catch(err => {
-        console.log(err);
-        dispatch(authFail(err));
+        dispatch(authFail(err.response.data.error));
       });
   }
 }
