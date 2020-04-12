@@ -23,6 +23,11 @@ export const authFail = (err) => {
 };
 
 export const logout = () => {
+  // удаляем token и expirationTime из localStorage
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
+  //
   return {
     type: actionTypes.AUTH_LOGOUT
   };
@@ -52,6 +57,12 @@ export const auth = (email, pass, isSignup) => {
     
     axios.post(url, authData)
       .then(res => {
+        // сохраняем "сессию" пользователя в localStorage
+        const expirationDate = new Date( new Date().getTime() + res.data.expiresIn * 1000); // окончание времени жизни токена
+        localStorage.setItem('token', res.data.idToken);
+        localStorage.setItem('expirationDate', expirationDate);
+        localStorage.setItem('userId', res.data.localId);
+        //
         dispatch(authSuccess(res.data.idToken, res.data.localId));
         dispatch(checkAuthTimeout(res.data.expiresIn));
       })
@@ -65,5 +76,28 @@ export const setAuthRedirectPath = (path) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path: path
+  };
+};
+
+// проверяем был ли алогинен user при перезагрузке или старте app
+export const authCheckState = () => {
+  return dispatch => {
+    // получаем токен
+    const token = localStorage.getItem('token');
+    // если token === null, то отправляем action logout
+    if(!token) {
+      dispatch(logout());
+    } else {
+      // иначе получаем дату истечения жизни токена
+      const expirationDate = new Date(localStorage.getItem('expirationDate'));
+      // если время еще не истекло
+      if( expirationDate >= new Date()){
+        const userId = localStorage.getItem('userId');
+        dispatch(authSuccess(token, userId));
+        dispatch(checkAuthTimeout( (expirationDate.getTime() - new Date().getTime()) / 1000 ));
+      } else {
+        dispatch(logout());
+      }
+    }
   };
 };
