@@ -8,6 +8,7 @@ import Input from '../../../components/UI/Input';
 import classes from './ContactData.css';
 import withErrorHandler from '../../../hoc/withErrorHandler';
 import * as actions from '../../../store/actions';
+import { updateObject } from '../../../shared/utitlity';
 
 class ContactData extends Component {
   state = {
@@ -144,19 +145,19 @@ class ContactData extends Component {
   }
 
   inputChangedHandler = (event, inputId) => {
-    // копируем orders из state
-    const updateOrderForm = {
-      ...this.state.orderForm
-    };
     // копируем вложенный массив, можно исползовать  updateOrderForm[inputId].value = event.target.value;
-    const updatedFormElement = { 
-      ...updateOrderForm[inputId]
-    };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-    // что бы Invalid применядлся только когда 
-    updatedFormElement.touched = true;
-    updateOrderForm[inputId] = updatedFormElement;
+    const updatedFormElement = updateObject(
+      this.state.orderForm[inputId], {
+        value: event.target.value,
+        valid: this.checkValidity(event.target.value, this.state.orderForm[inputId].validation),
+        touched: true
+      }
+    );
+
+    const updateOrderForm = updateObject(this.state.orderForm, {
+      [inputId]: updatedFormElement
+    });
+ 
     // проверяем valid формы
     let formIsValid = true;
     for (let inputId in updateOrderForm) {
