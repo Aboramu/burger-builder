@@ -9,8 +9,9 @@ import OrderSummary from '../../components/Burger/OrderSummary';
 import Spinner from '../../components/UI/Spinner';
 import * as actions from '../../store/actions';
 import axios from '../../axios-orders';
-
-class BurgerBuilder extends Component {
+// добавляем export что бы компонент был доступен для тестов
+// без обертки redux
+export class BurgerBuilder extends Component {
   state = {
     purchaseable: false,
     purchasing: false,
