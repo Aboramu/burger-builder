@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-orders';
 
 // sync action
 export const purchaseBurgerSuccess = (id, orderData) => {
@@ -51,40 +50,19 @@ export const fetchOrdersStart = () => {
 
 // async action
 export const purchaseBurger = (orderData, token) => {
-  return dispatch => {
-    dispatch(purchaseBurgerStart());
-    // отправляем запрос на сервер
-    axios.post(`/orders.json?auth=${token}`, orderData)
-      .then(res => {
-        dispatch(purchaseBurgerSuccess(res.data.name, orderData));
-      })
-      .catch(err => {
-        dispatch(purchaseBurgerFail( err ));
-      });
-  };
+  return {
+    type: actionTypes.PURCHASE_BURGER_SAGA,
+    orderData: orderData,
+    token: token
+  };   
 };
 
 export const fetchOrders = (token, userId) => {
-  return dispatch => {
-    dispatch(fetchOrdersStart());
-    // получаем из firebase все записи и преобразует обект, 
-    // в массив объектов 
-    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
-    axios.get(`/orders.json${queryParams}`)
-    .then(res => {
-      const fetchedOrders = [];
-      for (let key in res.data) {
-        fetchedOrders.push({
-          ...res.data[key],
-          id: key
-        });
-      }
-      dispatch(fetchOrdersSuccess(fetchedOrders));
-    })
-    .catch(err => {
-      dispatch(fetchOrdersFail(err));
-    });
-  };
+  return {
+    type: actionTypes.FETCH_ORDERS_SAGA,
+    token: token,
+    userId: userId
+  }
 }
 
 
