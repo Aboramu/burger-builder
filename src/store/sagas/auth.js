@@ -46,3 +46,24 @@ export function* authUserSaga(action) {
     yield put(actions.authFail(err.response.data.error));
   }  
 }
+
+// проверяем был ли алогинен user при перезагрузке или старте app
+export function* authCheckStateSaga(action) {
+  // получаем токен
+  const token = yield localStorage.getItem('token');
+  // если token === null, то отправляем action logout
+  if(!token) {
+    yield put(actions.logout());
+  } else {
+    // иначе получаем дату истечения жизни токена
+    const expirationDate = yield new Date(localStorage.getItem('expirationDate'));
+    // если время еще не истекло
+    if( expirationDate >= new Date()){
+      const userId = yield localStorage.getItem('userId');
+      yield put(actions.authSuccess(token, userId));
+      yield put(actions.checkAuthTimeout( (expirationDate.getTime() - new Date().getTime()) / 1000 ));
+    } else {
+      yield put(actions.logout());
+    }
+  }
+}

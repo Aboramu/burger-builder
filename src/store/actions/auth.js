@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios';
+
 
 export const authStart = () => {
   return {
@@ -66,23 +66,7 @@ export const setAuthRedirectPath = (path) => {
 
 // проверяем был ли алогинен user при перезагрузке или старте app
 export const authCheckState = () => {
-  return dispatch => {
-    // получаем токен
-    const token = localStorage.getItem('token');
-    // если token === null, то отправляем action logout
-    if(!token) {
-      dispatch(logout());
-    } else {
-      // иначе получаем дату истечения жизни токена
-      const expirationDate = new Date(localStorage.getItem('expirationDate'));
-      // если время еще не истекло
-      if( expirationDate >= new Date()){
-        const userId = localStorage.getItem('userId');
-        dispatch(authSuccess(token, userId));
-        dispatch(checkAuthTimeout( (expirationDate.getTime() - new Date().getTime()) / 1000 ));
-      } else {
-        dispatch(logout());
-      }
-    }
+  return {
+    type: actionTypes.AUTH_CHECK_STATE
   };
 };
