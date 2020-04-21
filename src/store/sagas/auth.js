@@ -1,5 +1,8 @@
 import { delay } from 'redux-saga/effects'; // функция helper, задерживает выполенение следующего шага 
-import { put } from 'redux-saga/effects'; // put - отправляет action, для которого создана сага
+import { put, call } from 'redux-saga/effects'; // put - отправляет action, для которого создана сага
+// call хелпер, с помощью него можно вызвать определенный метод для объекта
+// 1 параметр - массив, в котором 1е значение -объект, 2е - строка имя метода, 2й параметр - атрибу(строка)
+// делает функцию тестируемой
 import axios from 'axios';
 
 import * as actions from '../actions';
@@ -7,9 +10,9 @@ import * as actions from '../actions';
 export function* logoutSaga(action) {
   // удаляем token и expirationTime из localStorage
   // yield означает что движок будет ждать выполнения операции
-  yield localStorage.removeItem('token');
-  yield localStorage.removeItem('expirationDate');
-  yield localStorage.removeItem('userId');
+  yield call([localStorage, 'removeItem'], 'token');
+  yield call([localStorage, 'removeItem'], 'expirationDate');
+  yield call([localStorage, 'removeItem'], 'userId');
   yield put(actions.logoutSucceed());
 }
 
