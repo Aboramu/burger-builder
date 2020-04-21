@@ -18,6 +18,7 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const AUTH_CHECK_TIMEOUT = 'AUTH_CHECK_TIMEOUT'; // на этот тип реагирует сага
 export const AUTH_INITIATE_LOGOUT = 'AUTH_INITIATE_LOGOUT'; // сага
+export const AUTH_USER = 'AUTH_USER'; // сага
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
 export const SET_AUTH_REDIRECT_PATH = 'SET_AUTH_REDIRECT_PATH';

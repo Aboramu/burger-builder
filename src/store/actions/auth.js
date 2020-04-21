@@ -49,32 +49,12 @@ export const checkAuthTimeout = (expirationTime) => {
 };
 
 export const auth = (email, pass, isSignup) => {
-  return dispatch => {
-    dispatch(authStart());
-    const authData = {
-      email: email,
-      password: pass,
-      returnSecureToken: true
-    };
-    // set default url 
-    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAzH3s5WmmgfiSpdZfgXtLZtGAiF2pOpM4';
-    if(!isSignup) url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAzH3s5WmmgfiSpdZfgXtLZtGAiF2pOpM4'; 
-    
-    axios.post(url, authData)
-      .then(res => {
-        // сохраняем "сессию" пользователя в localStorage
-        const expirationDate = new Date( new Date().getTime() + res.data.expiresIn * 1000); // окончание времени жизни токена
-        localStorage.setItem('token', res.data.idToken);
-        localStorage.setItem('expirationDate', expirationDate);
-        localStorage.setItem('userId', res.data.localId);
-        //
-        dispatch(authSuccess(res.data.idToken, res.data.localId));
-        dispatch(checkAuthTimeout(res.data.expiresIn));
-      })
-      .catch(err => {
-        dispatch(authFail(err.response.data.error));
-      });
-  }
+  return {
+    type: actionTypes.AUTH_USER,
+    email: email,
+    isSignup: isSignup,
+    pass: pass
+  };
 }
 
 export const setAuthRedirectPath = (path) => {
